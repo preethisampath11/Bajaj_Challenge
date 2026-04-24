@@ -170,6 +170,27 @@ function getHealth(req, res) {
 }
 
 /**
+ * GET /
+ * Root endpoint - API information
+ */
+function getRootInfo(req, res) {
+  res.status(200).json({
+    name: 'BFHL Tree Analyzer API',
+    version: '1.0.0',
+    description: 'Binary Frequency Hierarchical List - Tree Analysis API',
+    endpoints: {
+      'POST /bfhl': 'Analyze tree data (main endpoint)',
+      'GET /health': 'Health check with DB status',
+      'GET /bfhl/history?limit=10': 'Get user analysis history',
+      'GET /bfhl/recent?limit=5': 'Get recent analyses',
+      'GET /bfhl/cycles': 'Get analyses with cycles'
+    },
+    database: api.locals.db ? 'connected' : 'disconnected',
+    timestamp: new Date().toISOString()
+  });
+}
+
+/**
  * Global error handler
  */
 function globalErrorHandler(err, req, res, next) {
@@ -178,6 +199,7 @@ function globalErrorHandler(err, req, res, next) {
 }
 
 // Register routes
+api.get('/', getRootInfo);
 api.post('/bfhl', handleBfhlPost);
 api.get('/bfhl/history', getAnalysisHistory);
 api.get('/bfhl/recent', getRecentAnalyses);
