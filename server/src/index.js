@@ -158,6 +158,40 @@ async function getAnalysesWithCycles(req, res, next) {
 }
 
 /**
+ * GET /bfhl
+ * Informational endpoint explaining how to use the API
+ */
+function getBfhlInfo(req, res) {
+  res.status(200).json({
+    message: 'BFHL Tree Analyzer Endpoint',
+    method: 'POST',
+    description: 'Submit an array of edges in format [A->B, C->D, ...] to analyze the hierarchical tree structure',
+    example: {
+      request: {
+        method: 'POST',
+        url: '/bfhl',
+        body: {
+          data: ['A->B', 'B->C', 'A->C']
+        }
+      },
+      response: {
+        user_id: 'string',
+        email_id: 'string',
+        roll_number: 'string',
+        hierarchies: 'array of trees',
+        invalid_entries: 'array of invalid edges',
+        duplicate_edges: 'array of duplicates',
+        summary: {
+          total_trees: 'number',
+          total_cycles: 'number',
+          largest_tree_root: 'string'
+        }
+      }
+    }
+  });
+}
+
+/**
  * GET /health
  * Health check endpoint
  */
@@ -195,6 +229,7 @@ function globalErrorHandler(err, req, res, next) {
 // Register routes
 api.get('/', getRootInfo);
 api.get('/health', getHealth);
+api.get('/bfhl', getBfhlInfo);
 api.post('/bfhl', handleBfhlPost);
 api.get('/bfhl/history', getAnalysisHistory);
 api.get('/bfhl/recent', getRecentAnalyses);
