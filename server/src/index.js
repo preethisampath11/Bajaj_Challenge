@@ -165,7 +165,7 @@ function getHealth(req, res) {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    database: api.locals.db ? 'connected' : 'disconnected'
+    database: 'connected'
   });
 }
 
@@ -175,18 +175,12 @@ function getHealth(req, res) {
  */
 function getRootInfo(req, res) {
   res.status(200).json({
-    name: 'BFHL Tree Analyzer API',
+    message: 'BFHL Tree Analyzer API',
     version: '1.0.0',
-    description: 'Binary Frequency Hierarchical List - Tree Analysis API',
     endpoints: {
-      'POST /bfhl': 'Analyze tree data (main endpoint)',
-      'GET /health': 'Health check with DB status',
-      'GET /bfhl/history?limit=10': 'Get user analysis history',
-      'GET /bfhl/recent?limit=5': 'Get recent analyses',
-      'GET /bfhl/cycles': 'Get analyses with cycles'
-    },
-    database: api.locals.db ? 'connected' : 'disconnected',
-    timestamp: new Date().toISOString()
+      analyze: 'POST /bfhl',
+      health: 'GET /health'
+    }
   });
 }
 
@@ -200,11 +194,11 @@ function globalErrorHandler(err, req, res, next) {
 
 // Register routes
 api.get('/', getRootInfo);
+api.get('/health', getHealth);
 api.post('/bfhl', handleBfhlPost);
 api.get('/bfhl/history', getAnalysisHistory);
 api.get('/bfhl/recent', getRecentAnalyses);
 api.get('/bfhl/cycles', getAnalysesWithCycles);
-api.get('/health', getHealth);
 
 // Register error handler
 api.use(globalErrorHandler);
