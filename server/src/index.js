@@ -18,7 +18,7 @@ const corsOptions = {
       'http://localhost:5173',
       'http://localhost:5174',
       'http://localhost:5175',
-      process.env.FRONTEND_URL || 'https://bajaj-finserv-health-challenge.vercel.app'
+      process.env.FRONTEND_URL || 'https://bajaj-challenge-plum.vercel.app'
     ];
 
     // Allow requests with no origin (like mobile apps or curl requests)
